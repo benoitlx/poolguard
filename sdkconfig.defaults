@@ -1,0 +1,33 @@
+# Partition table — factory + two OTA slots + otadata (required for EspOta;
+# the default single-factory-app layout has nowhere to write an incoming update).
+# CONFIG_PARTITION_TABLE_CUSTOM_FILENAME is resolved relative to esp-idf-sys's
+# internal build dir, not the project root, so it can't point at our own
+# checked-in partitions.csv — use the built-in two_ota table for the build
+# instead (verified to produce the same layout as our partitions.csv, which
+# is passed to espflash separately via --partition-table in .cargo/config.toml).
+CONFIG_PARTITION_TABLE_TWO_OTA=y
+
+# WT32-ETH01 on this board has 8MB flash (default Kconfig assumes 2MB, too
+# small for the two-OTA-slot partition table above)
+CONFIG_ESPTOOLPY_FLASHSIZE_8MB=y
+
+# Stack size for main task
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=16384
+
+# Ethernet — internal MAC + LAN8720 PHY (WT32-ETH01)
+CONFIG_ETH_ENABLED=y
+CONFIG_ETH_USE_ESP32_EMAC=y
+CONFIG_ETH_PHY_LAN87XX=y
+CONFIG_ETH_PHY_ADDR=1
+CONFIG_ETH_PHY_RST_GPIO=16
+CONFIG_ETH_MDC_GPIO=23
+CONFIG_ETH_MDIO_GPIO=18
+
+# LWIP
+CONFIG_LWIP_LOCAL_HOSTNAME="pool-monitor"
+
+# MQTT
+CONFIG_MQTT_PROTOCOL_311=y
+
+# FreeRTOS tick rate (needed for accurate sleep durations)
+CONFIG_FREERTOS_HZ=1000

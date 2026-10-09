@@ -1,0 +1,26 @@
+[package]
+name = "poolguard"
+version = "0.1.0"
+edition = "2021"
+resolver = "2"
+
+[[bin]]
+name = "poolguard"
+harness = false
+
+[dependencies]
+esp-idf-svc = { version = "0.52", features = ["std", "alloc"] }
+esp-idf-hal = "0.46"
+esp-idf-sys = { version = "0.37", features = ["binstart"] }
+embedded-svc = "0.29"
+log = "0.4"
+anyhow = "1"
+ads1x1x = "0.3"
+nb = "1"
+
+[build-dependencies]
+embuild = "0.33"
+
+[profile.release]
+opt-level = "s"
+lto = true
